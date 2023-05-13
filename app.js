@@ -1,6 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const exphbs = require('express-handlebars')
+const bodyParser = require('body-parser')
 const Todo = require('./models/todo')
 
 // 僅在非正式環境時, 使用 dotenv
@@ -22,6 +23,11 @@ db.once('open', () => {
   console.log('mongodb connected!')
 })
 
+app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
+app.set('view engine', 'hbs')
+
+app.use(bodyParser.urlencoded({ extended: true }))
+
 // 設定首頁路由
 app.get('/', (req, res) => {
   Todo.find()
@@ -30,8 +36,21 @@ app.get('/', (req, res) => {
     .catch(error => console.log(error))
 })
 
-app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
-app.set('view engine', 'hbs')
+app.get('/todos/new', (req, res) => {
+  return res.render('new')
+})
+
+app.post('/todos', (req, res) => {
+  const name = req.body.name
+  // return Todo.create({ name })
+  //   .then(() => res.redirect('/'))
+  //   .catch(error => console.log(error))
+
+  const todo = new Todo({ name })
+  return todo.save()
+    .then(() => res.redirect('/'))
+    .catch(error => console.log(error))
+})
 
 // 設定 port 3000
 app.listen(3000, () => {

@@ -14,4 +14,4 @@ node_modules
 *.gz
 
 # dotenv
-.env.js
+.env
