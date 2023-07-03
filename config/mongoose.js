@@ -5,6 +5,8 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
 
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/todo-list'
+
 // 設定連線到 mongoDB
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
 // 取得資料庫連線狀態
