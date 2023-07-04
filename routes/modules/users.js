@@ -6,6 +6,7 @@ const passport = require('passport')
 
 const User = require('../../models/user')
 
+// 登入路由
 router.get('/login', (req, res) => {
   res.render('login')
 })
@@ -16,6 +17,7 @@ router.post('/login', passport.authenticate('local', {
   failureRedirect: '/user/login'
 }))
 
+// 註冊路由
 router.get('/register', (req, res) => {
   res.render('register')
 })
